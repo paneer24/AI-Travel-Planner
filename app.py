@@ -17,6 +17,9 @@ date_input = st.sidebar.date_input('Travel Start Date', min_value=date.today())
 date = date_input.strftime('%Y-%m-%d')
 duration = st.sidebar.slider('Duration (days)', 1, 90, 7)
 
+# Currency selector
+currencies = ['INR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD']  # Add more currencies as needed
+selected_currency = st.sidebar.selectbox('Select Currency', currencies)
 
 # Additional user preferences
 st.sidebar.subheader('Your Preferences:')
@@ -54,6 +57,13 @@ def get_personalized_travel_plan(user_preferences, trip_details, api_key):
     # Split the travel plan by days
     days = travel_plan.split("Day ")
     
+    # Check if there's a travel checklist and separate it
+    if "Travel Checklist:" in travel_plan:
+        travel_plan, travel_checklist = travel_plan.split("Travel Checklist:")
+        travel_checklist = "Travel Checklist:" + travel_checklist
+    else:
+        travel_checklist = ""
+    
     # Iterate over each day and add Google Maps link
     for day in range(1, trip_details['duration'] + 1):
         current_date = start_date + timedelta(days=day - 1)
@@ -70,6 +80,7 @@ def get_personalized_travel_plan(user_preferences, trip_details, api_key):
         day_text += f"\n[View on Google Maps](https://www.google.com/maps/dir/?api=1&origin={trip_details['source']}&destination={trip_details['destination']}&travelmode=driving)\n\n"
         travel_plan_with_maps += day_text
     
+    travel_plan_with_maps += travel_checklist  # Add the travel checklist at the end
     return travel_plan_with_maps
 
 # Collecting user preferences and trip details for travel planning
