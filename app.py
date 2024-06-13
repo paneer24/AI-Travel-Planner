@@ -17,9 +17,6 @@ date_input = st.sidebar.date_input('Travel Start Date', min_value=date.today())
 date = date_input.strftime('%Y-%m-%d')
 duration = st.sidebar.slider('Duration (days)', 1, 90, 7)
 
-# Currency selector
-currencies = ['INR', 'USD', 'EUR', 'GBP', 'JPY', 'AUD']  # Add more currencies as needed
-selected_currency = st.sidebar.selectbox('Select Currency', currencies)
 
 # Additional user preferences
 st.sidebar.subheader('Your Preferences:')
